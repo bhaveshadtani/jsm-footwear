@@ -145,7 +145,7 @@ const CallToAction = () => {
                     id="phone"
                     value={phoneNumber}
                     onChange={handlePhoneChange}
-                    placeholder="+91 XXXXXXXXXX"
+                    placeholder="XXXXXXXXXX"
                     required
                     className={`w-full px-4 py-3 bg-white/5 border ${phoneError ? 'border-red-500' : 'border-white/10'
                       } rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-white`}
@@ -175,8 +175,8 @@ const CallToAction = () => {
                   type="submit"
                   disabled={isSubmitting || !!phoneError}
                   className={`w-full bg-white text-black px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!phoneError
-                      ? 'opacity-70 cursor-not-allowed'
-                      : 'hover:bg-neutral-200'
+                    ? 'opacity-70 cursor-not-allowed'
+                    : 'hover:bg-neutral-200'
                     }`}
                 >
                   {isSubmitting ? (
