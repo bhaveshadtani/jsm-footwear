@@ -16,7 +16,7 @@ const CallToAction = () => {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPhoneNumber(value);
-    
+
     if (value && !validatePhoneNumber(value)) {
       setPhoneError('Please enter a valid phone number');
     } else {
@@ -26,12 +26,12 @@ const CallToAction = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validatePhoneNumber(phoneNumber)) {
       setPhoneError('Please enter a valid phone number');
       return;
     }
-    
+
     setIsSubmitting(true);
 
     // Simulate API call
@@ -39,7 +39,7 @@ const CallToAction = () => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setPhoneNumber('');
-      
+
       // Reset after showing success message
       setTimeout(() => {
         setIsSubmitted(false);
@@ -50,9 +50,9 @@ const CallToAction = () => {
   const handleShare = (platform: string) => {
     const shareText = "Join our exclusive pre-launch community for luxury footwear!";
     const shareUrl = window.location.href;
-    
+
     let url = '';
-    
+
     switch (platform) {
       case 'facebook':
         url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
@@ -66,7 +66,7 @@ const CallToAction = () => {
         alert('Link copied to clipboard! Open Instagram to share.');
         return;
     }
-    
+
     if (url) {
       window.open(url, '_blank', 'width=600,height=400');
     }
@@ -145,11 +145,10 @@ const CallToAction = () => {
                     id="phone"
                     value={phoneNumber}
                     onChange={handlePhoneChange}
-                    placeholder="+1 (234) 567-8900"
+                    placeholder="+91 XXXXXXXXXX"
                     required
-                    className={`w-full px-4 py-3 bg-white/5 border ${
-                      phoneError ? 'border-red-500' : 'border-white/10'
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-white`}
+                    className={`w-full px-4 py-3 bg-white/5 border ${phoneError ? 'border-red-500' : 'border-white/10'
+                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-white`}
                   />
                   {phoneError && (
                     <p className="mt-1 text-sm text-red-400">{phoneError}</p>
@@ -175,11 +174,10 @@ const CallToAction = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || !!phoneError}
-                  className={`w-full bg-white text-black px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${
-                    isSubmitting || !!phoneError
+                  className={`w-full bg-white text-black px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!phoneError
                       ? 'opacity-70 cursor-not-allowed'
                       : 'hover:bg-neutral-200'
-                  }`}
+                    }`}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
