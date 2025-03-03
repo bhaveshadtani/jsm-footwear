@@ -1,17 +1,3 @@
-import React from 'react';
-import { 
-  Instagram, 
-  Facebook, 
-  MessageCircle, 
-  Mail, 
-  MapPin, 
-  Phone, 
-  ArrowRight, 
-  ShoppingBag, 
-  Award, 
-  Truck, 
-  Calendar 
-} from 'lucide-react';
 import HeroSection from './components/HeroSection';
 import CollectionPreview from './components/CollectionPreview';
 import ValueProposition from './components/ValueProposition';

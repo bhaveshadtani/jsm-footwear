@@ -31,7 +31,7 @@ const Footer = () => {
                 <Facebook size={18} />
               </a>
               <a 
-                href="https://wa.me/1234567890" 
+                href="https://wa.me/919033835654" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
@@ -49,7 +49,6 @@ const Footer = () => {
               <li><a href="#" className="text-neutral-400 hover:text-white transition-colors">Collections</a></li>
               <li><a href="#" className="text-neutral-400 hover:text-white transition-colors">Sustainability</a></li>
               <li><a href="#" className="text-neutral-400 hover:text-white transition-colors">Press</a></li>
-              <li><a href="#" className="text-neutral-400 hover:text-white transition-colors">Careers</a></li>
             </ul>
           </div>
 
@@ -69,22 +68,24 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <a 
-                  href="https://maps.google.com/?q=123+Fashion+Avenue,+Milan,+Italy+20121" 
+                  href="https://maps.app.goo.gl/jx1xU4si3m3nqKzQ6"
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-start gap-3 text-neutral-400 hover:text-white transition-colors"
                 >
                   <MapPin size={20} className="text-neutral-400 mt-1 flex-shrink-0" />
-                  <span>123 Fashion Avenue, Milan, Italy 20121</span>
+                  <span>Jay Santoshi Maa Footwear<br />
+                    3, Dharmendra Rd, Opp. Punjab and Sind Bank,
+                    Rajkot, Gujarat 360001</span>
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <a 
-                  href="tel:+390212345678" 
+                  href="tel:+919033835654" 
                   className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors"
                 >
                   <Phone size={20} className="text-neutral-400 flex-shrink-0" />
-                  <span>+39 02 1234 5678</span>
+                  <span>+91 9033835654</span>
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -98,13 +99,13 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-3">
                 <a 
-                  href="https://wa.me/390298765432" 
+                  href="https://wa.me/919033835654" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 text-neutral-400 hover:text-white transition-colors"
                 >
                   <MessageCircle size={20} className="text-neutral-400 flex-shrink-0" />
-                  <span>WhatsApp: +39 02 9876 5432</span>
+                  <span>WhatsApp: +91 9033835654</span>
                 </a>
               </li>
             </ul>

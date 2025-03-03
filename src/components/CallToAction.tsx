@@ -8,9 +8,8 @@ const CallToAction = () => {
   const [phoneError, setPhoneError] = useState('');
 
   const validatePhoneNumber = (phone: string) => {
-    // Basic phone validation - at least 10 digits
-    const phoneRegex = /^\+?[0-9]{10,15}$/;
-    return phoneRegex.test(phone.replace(/[\s()-]/g, ''));
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +17,7 @@ const CallToAction = () => {
     setPhoneNumber(value);
 
     if (value && !validatePhoneNumber(value)) {
-      setPhoneError('Please enter a valid phone number');
+      setPhoneError('Please enter a valid 10 digits phone number');
     } else {
       setPhoneError('');
     }
@@ -28,7 +27,7 @@ const CallToAction = () => {
     e.preventDefault();
 
     if (!validatePhoneNumber(phoneNumber)) {
-      setPhoneError('Please enter a valid phone number');
+      setPhoneError('Please enter a valid 10 digits phone number');
       return;
     }
 
@@ -145,6 +144,7 @@ const CallToAction = () => {
                     id="phone"
                     value={phoneNumber}
                     onChange={handlePhoneChange}
+                    // maxLength={10}
                     placeholder="XXXXXXXXXX"
                     required
                     className={`w-full px-4 py-3 bg-white/5 border ${phoneError ? 'border-red-500' : 'border-white/10'

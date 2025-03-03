@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Instagram, Heart, MessageCircle, Share2, RefreshCw } from 'lucide-react';
-import axios from 'axios';
 
 interface InstagramPost {
   id: string;
@@ -20,11 +19,22 @@ const InstagramFeed = () => {
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [selectedPost, setSelectedPost] = useState<string | null>(null);
   const [commentText, setCommentText] = useState('');
-  const [comments, setComments] = useState<{[key: string]: string[]}>({});
+  const [comments, setComments] = useState<{ [key: string]: string[] }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareCaption, setShareCaption] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+
+  const [activePostId, setActivePostId] = useState(null);
+
+  // Toggle the post details visibility
+  const togglePostDetails = (postId: any) => {
+    if (activePostId === postId) {
+      setActivePostId(null); // Close details if it's already open
+    } else {
+      setActivePostId(postId); // Open details for the clicked post
+    }
+  };
 
   // Fetch Instagram posts
   useEffect(() => {
@@ -34,14 +44,14 @@ const InstagramFeed = () => {
   const fetchInstagramPosts = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // In a real implementation, you would call your backend API that handles Instagram API authentication
       // For this demo, we'll simulate the API response with our sample data
-      
+
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Sample data (in a real app, this would come from the Instagram API)
       const samplePosts: InstagramPost[] = [
         {
@@ -126,7 +136,7 @@ const InstagramFeed = () => {
           comments: 156
         }
       ];
-      
+
       setPosts(samplePosts);
     } catch (err) {
       console.error('Error fetching Instagram posts:', err);
@@ -161,7 +171,7 @@ const InstagramFeed = () => {
     const currentUrl = window.location.href;
     const encodedText = encodeURIComponent(`${shareCaption} - Check out our latest collection!`);
     const encodedUrl = encodeURIComponent(currentUrl);
-    
+
     switch (platform) {
       case 'facebook':
         shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`;
@@ -178,7 +188,7 @@ const InstagramFeed = () => {
         setShowShareModal(false);
         return;
     }
-    
+
     if (shareUrl) {
       window.open(shareUrl, '_blank', 'width=600,height=400');
       setShowShareModal(false);
@@ -193,16 +203,16 @@ const InstagramFeed = () => {
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPost || !commentText.trim()) return;
-    
+
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       const updatedComments = {
         ...comments,
         [selectedPost]: [...(comments[selectedPost] || []), commentText]
       };
-      
+
       setComments(updatedComments);
       setCommentText('');
       setIsSubmitting(false);
@@ -214,26 +224,26 @@ const InstagramFeed = () => {
     const date = new Date(timestamp);
     const now = new Date();
     const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-    
+
     if (diffInSeconds < 60) {
       return `${diffInSeconds} seconds ago`;
     }
-    
+
     const diffInMinutes = Math.floor(diffInSeconds / 60);
     if (diffInMinutes < 60) {
       return `${diffInMinutes} minute${diffInMinutes !== 1 ? 's' : ''} ago`;
     }
-    
+
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) {
       return `${diffInHours} hour${diffInHours !== 1 ? 's' : ''} ago`;
     }
-    
+
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays < 30) {
       return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
     }
-    
+
     const diffInMonths = Math.floor(diffInDays / 30);
     return `${diffInMonths} month${diffInMonths !== 1 ? 's' : ''} ago`;
   };
@@ -251,29 +261,28 @@ const InstagramFeed = () => {
             </p>
           </div>
           <div className="flex items-center gap-4 mt-6 md:mt-0">
-            <button 
+            <button
               onClick={handleRefresh}
               disabled={loading || refreshing}
-              className={`flex items-center gap-2 bg-neutral-100 text-neutral-800 px-4 py-2 rounded-full font-medium transition-all duration-300 ${
-                (loading || refreshing) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200'
-              }`}
+              className={`flex items-center gap-2 bg-neutral-100 text-neutral-800 px-4 py-2 rounded-full font-medium transition-all duration-300 ${(loading || refreshing) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-200'
+                }`}
               aria-label="Refresh Instagram feed"
             >
               <RefreshCw size={18} className={refreshing ? 'animate-spin' : ''} />
               {refreshing ? 'Refreshing...' : 'Refresh'}
             </button>
-            <a 
-              href="https://instagram.com" 
-              target="_blank" 
+            <a
+              href="https://instagram.com"
+              target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-full font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-300"
             >
               <Instagram size={20} />
-              Follow @footwear
+              Follow
             </a>
           </div>
         </div>
-        
+
         {loading && !refreshing ? (
           <div className="flex flex-col items-center justify-center py-20">
             <div className="w-16 h-16 border-4 border-neutral-200 border-t-neutral-800 rounded-full animate-spin mb-4"></div>
@@ -282,7 +291,7 @@ const InstagramFeed = () => {
         ) : error ? (
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
             <p className="text-red-800 mb-4">{error}</p>
-            <button 
+            <button
               onClick={handleRefresh}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
             >
@@ -292,16 +301,19 @@ const InstagramFeed = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {posts.map((post) => (
-              <div 
-                key={post.id} 
+              <div
+                key={post.id}
                 className="group relative overflow-hidden rounded-lg aspect-square"
+                onClick={() => togglePostDetails(post.id)} // Trigger toggle on click
               >
-                <img 
-                  src={post.media_url} 
-                  alt={post.caption} 
-                  className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                <img
+                  src={post.media_url}
+                  alt={post.caption}
+                  className="w-full h-full object-cover object-center transition-transform duration-700"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                <div
+                  className={`absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 ${activePostId === post.id ? 'opacity-100' : 'opacity-0'}`}
+                >
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 rounded-full bg-white/20 flex-shrink-0"></div>
                     <div>
@@ -312,29 +324,29 @@ const InstagramFeed = () => {
                   <p className="text-white text-sm mb-3">{post.caption}</p>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      <button 
-                        onClick={() => handleLike(post.id)}
+                      <button
+                        onClick={(e) => { e.stopPropagation(); handleLike(post.id); }} // Prevent toggle on click inside button
                         className="flex items-center gap-1 text-white"
                         aria-label={likedPosts.includes(post.id) ? "Unlike post" : "Like post"}
                       >
-                        <Heart 
-                          size={18} 
-                          fill={likedPosts.includes(post.id) ? "white" : "none"} 
+                        <Heart
+                          size={18}
+                          fill={likedPosts.includes(post.id) ? "white" : "none"}
                           className={likedPosts.includes(post.id) ? "text-red-500" : "text-white"}
                         />
                         <span>{likedPosts.includes(post.id) ? post.likes + 1 : post.likes}</span>
                       </button>
-                      <button 
+                      <button
                         className="flex items-center gap-1 text-white"
-                        onClick={() => handleCommentClick(post.id)}
+                        onClick={(e) => { e.stopPropagation(); handleCommentClick(post.id); }} // Prevent toggle on click inside button
                         aria-label="Comment on post"
                       >
                         <MessageCircle size={18} />
                         <span>{post.comments + (comments[post.id]?.length || 0)}</span>
                       </button>
                     </div>
-                    <button 
-                      onClick={() => handleShare(post.caption)}
+                    <button
+                      onClick={(e) => { e.stopPropagation(); handleShare(post.caption); }} // Prevent toggle on click inside button
                       className="text-white hover:text-gray-300 transition-colors"
                       aria-label="Share post"
                     >
@@ -342,7 +354,7 @@ const InstagramFeed = () => {
                     </button>
                   </div>
                 </div>
-                <a 
+                <a
                   href={post.permalink}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -361,7 +373,7 @@ const InstagramFeed = () => {
       {showCommentModal && selectedPostData && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white text-black rounded-2xl max-w-2xl w-full p-6 md:p-8 relative animate-fade-in">
-            <button 
+            <button
               onClick={() => setShowCommentModal(false)}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close comment modal"
@@ -371,14 +383,14 @@ const InstagramFeed = () => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            
+
             <h3 className="text-2xl font-bold mb-6">Comments</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <img 
-                  src={selectedPostData.media_url} 
-                  alt="Post" 
+                <img
+                  src={selectedPostData.media_url}
+                  alt="Post"
                   className="w-full h-auto rounded-lg"
                 />
                 <div className="mt-4">
@@ -399,7 +411,7 @@ const InstagramFeed = () => {
                     <span className="text-sm text-neutral-500">{formatRelativeTime(selectedPostData.timestamp)}</span>
                   </div>
                 </div>
-                
+
                 <div className="max-h-60 overflow-y-auto space-y-4 mb-4">
                   {/* Default comments */}
                   {Array.from({ length: 3 }).map((_, index) => (
@@ -414,7 +426,7 @@ const InstagramFeed = () => {
                       </div>
                     </div>
                   ))}
-                  
+
                   {/* User added comments */}
                   {comments[selectedPostData.id]?.map((comment, index) => (
                     <div key={`user-${index}`} className="flex items-start gap-2">
@@ -429,7 +441,7 @@ const InstagramFeed = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <form onSubmit={handleCommentSubmit} className="mt-4">
                   <div className="flex items-center gap-2">
                     <input
@@ -442,9 +454,8 @@ const InstagramFeed = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting || !commentText.trim()}
-                      className={`bg-black text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 ${
-                        isSubmitting || !commentText.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-800'
-                      }`}
+                      className={`bg-black text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 ${isSubmitting || !commentText.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neutral-800'
+                        }`}
                     >
                       {isSubmitting ? 'Posting...' : 'Post'}
                     </button>
@@ -460,7 +471,7 @@ const InstagramFeed = () => {
       {showShareModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white text-black rounded-2xl max-w-md w-full p-6 md:p-8 relative animate-fade-in">
-            <button 
+            <button
               onClick={() => setShowShareModal(false)}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close share modal"
@@ -470,12 +481,12 @@ const InstagramFeed = () => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            
+
             <h3 className="text-2xl font-bold mb-4">Share This Post</h3>
             <p className="mb-6 text-neutral-600">{shareCaption}</p>
-            
+
             <div className="grid grid-cols-2 gap-4">
-              <button 
+              <button
                 onClick={() => handleSharePlatform('facebook')}
                 className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
@@ -484,8 +495,8 @@ const InstagramFeed = () => {
                 </svg>
                 Facebook
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => handleSharePlatform('twitter')}
                 className="flex items-center justify-center gap-2 bg-sky-500 text-white px-4 py-3 rounded-lg hover:bg-sky-600 transition-colors"
               >
@@ -494,8 +505,8 @@ const InstagramFeed = () => {
                 </svg>
                 Twitter
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => handleSharePlatform('whatsapp')}
                 className="flex items-center justify-center gap-2 bg-green-500 text-white px-4 py-3 rounded-lg hover:bg-green-600 transition-colors"
               >
@@ -504,8 +515,8 @@ const InstagramFeed = () => {
                 </svg>
                 WhatsApp
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => handleSharePlatform('copy')}
                 className="flex items-center justify-center gap-2 bg-neutral-800 text-white px-4 py-3 rounded-lg hover:bg-neutral-900 transition-colors"
               >

@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const HeroSection = () => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
@@ -9,6 +9,9 @@ const HeroSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [emailError, setEmailError] = useState('');
 
+  const showPreviewModalRef = useRef<HTMLDivElement>(null);
+  const showNotificationModalRef = useRef<HTMLDivElement>(null);
+
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -17,7 +20,7 @@ const HeroSection = () => {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    
+
     if (value && !validateEmail(value)) {
       setEmailError('Please enter a valid email address');
     } else {
@@ -27,12 +30,12 @@ const HeroSection = () => {
 
   const handleNotificationSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateEmail(email)) {
       setEmailError('Please enter a valid email address');
       return;
     }
-    
+
     setIsSubmitting(true);
 
     // Simulate API call
@@ -40,7 +43,7 @@ const HeroSection = () => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setEmail('');
-      
+
       // Close modal after success message is shown
       setTimeout(() => {
         setShowNotificationModal(false);
@@ -48,6 +51,22 @@ const HeroSection = () => {
       }, 3000);
     }, 1500);
   };
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (showPreviewModalRef.current && !showPreviewModalRef.current.contains(event.target as Node)) {
+        setShowPreviewModal(false);
+      }
+      if (showNotificationModalRef.current && !showNotificationModalRef.current.contains(event.target as Node)) {
+        setShowNotificationModal(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    }
+  }, [])
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -75,14 +94,14 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-delayed-more">
-            <button 
+            <button
               onClick={() => setShowNotificationModal(true)}
               className="bg-white text-black px-8 py-3 rounded-full font-medium flex items-center gap-2 hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105"
             >
               Get Notified
               <ArrowRight size={18} />
             </button>
-            <button 
+            <button
               onClick={() => setShowPreviewModal(true)}
               className="border border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white hover:bg-opacity-10 transition-all duration-300"
             >
@@ -102,8 +121,8 @@ const HeroSection = () => {
       {/* Get Notified Modal */}
       {showNotificationModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white text-black rounded-2xl max-w-md w-full p-6 md:p-8 relative animate-fade-in">
-            <button 
+          <div ref={showNotificationModalRef} className="bg-white text-black rounded-2xl max-w-md w-full p-6 md:p-8 relative animate-fade-in overflow-auto scrollbar-thin">
+            <button
               onClick={() => {
                 setShowNotificationModal(false);
                 setIsSubmitted(false);
@@ -117,9 +136,9 @@ const HeroSection = () => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            
+
             <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
-            
+
             {isSubmitted ? (
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
                 <p className="text-green-800 font-medium">
@@ -131,7 +150,7 @@ const HeroSection = () => {
                 <p className="text-neutral-600 mb-6">
                   Be the first to know when our collection launches. We'll send you exclusive early access.
                 </p>
-                
+
                 <form onSubmit={handleNotificationSubmit} className="space-y-4">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
@@ -144,15 +163,14 @@ const HeroSection = () => {
                       onChange={handleEmailChange}
                       placeholder="your@email.com"
                       required
-                      className={`w-full px-4 py-3 border ${
-                        emailError ? 'border-red-500' : 'border-neutral-300'
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500`}
+                      className={`w-full px-4 py-3 border ${emailError ? 'border-red-500' : 'border-neutral-300'
+                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500`}
                     />
                     {emailError && (
                       <p className="mt-1 text-sm text-red-600">{emailError}</p>
                     )}
                   </div>
-                  
+
                   <div className="flex items-start">
                     <input
                       type="checkbox"
@@ -164,13 +182,12 @@ const HeroSection = () => {
                       I agree to receive email notifications about product launches and exclusive offers.
                     </label>
                   </div>
-                  
+
                   <button
                     type="submit"
                     disabled={isSubmitting || !!emailError}
-                    className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${
-                      isSubmitting || !!emailError ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'
-                    }`}
+                    className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!emailError ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'
+                      }`}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
@@ -213,8 +230,8 @@ const HeroSection = () => {
       {/* Explore Preview Modal */}
       {showPreviewModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white text-black rounded-2xl max-w-4xl w-full p-6 md:p-8 relative animate-fade-in overflow-y-auto max-h-[90vh]">
-            <button 
+          <div ref={showPreviewModalRef} className="bg-white text-black rounded-2xl max-w-4xl w-full p-6 md:p-8 relative animate-fade-in overflow-auto scrollbar-thin max-h-[90vh]">
+            <button
               onClick={() => setShowPreviewModal(false)}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close preview modal"
@@ -224,14 +241,14 @@ const HeroSection = () => {
                 <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
-            
+
             <h3 className="text-2xl font-bold mb-6">Collection Preview</h3>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" 
-                  alt="Luxury shoe preview" 
+                <img
+                  src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+                  alt="Luxury shoe preview"
                   className="w-full h-auto rounded-lg"
                 />
               </div>
@@ -263,11 +280,11 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="mt-8 pt-6 border-t border-neutral-200">
               <h4 className="text-lg font-semibold mb-4">More from this collection</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
                   alt="Additional shoe preview"
                   className="w-full h-auto rounded-lg"
