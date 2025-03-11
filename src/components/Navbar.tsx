@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Instagram, Facebook, MessageCircle, MapPin } from 'lucide-react';
+import { Instagram, Facebook, MessageCircle, MapPin, XIcon } from 'lucide-react';
 
 const Navbar = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
@@ -73,10 +73,7 @@ const Navbar = () => {
               onClick={() => setShowLocationModal(false)}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <XIcon />
             </button>
             <h3 className="text-2xl font-bold mb-6">Our Locations</h3>
 

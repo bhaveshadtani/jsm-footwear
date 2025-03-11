@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const HeroSection = () => {
@@ -131,10 +131,7 @@ const HeroSection = () => {
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close notification modal"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <XIcon />
             </button>
 
             <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
@@ -236,10 +233,7 @@ const HeroSection = () => {
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close preview modal"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
+              <XIcon />
             </button>
 
             <h3 className="text-2xl font-bold mb-6">Collection Preview</h3>

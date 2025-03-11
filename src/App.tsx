@@ -5,6 +5,7 @@ import InstagramFeed from './components/InstagramFeed';
 import CallToAction from './components/CallToAction';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <InstagramFeed />
       <CallToAction />
       <Footer />
+      <ToastContainer />
     </div>
   );
 }
