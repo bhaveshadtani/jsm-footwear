@@ -74,7 +74,7 @@ const HeroSection = () => {
       <div className="absolute inset-0 z-0">
         <img
           src="https://images.unsplash.com/photo-1556048219-bb6978360b84?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
-          alt="Luxury men's shoes"
+          alt="Premium men's shoes"
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
@@ -90,7 +90,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-lg md:text-xl lg:text-2xl mb-10 opacity-90 max-w-2xl mx-auto animate-fade-in-delayed">
-            A curated collection of luxury shoes launching soon
+            A curated collection of premium shoes launching soon
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-delayed-more">
@@ -242,7 +242,7 @@ const HeroSection = () => {
               <div>
                 <img
                   src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-                  alt="Luxury shoe preview"
+                  alt="Premium shoe preview"
                   className="w-full h-auto rounded-lg"
                 />
               </div>

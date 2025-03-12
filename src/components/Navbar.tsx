@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Instagram, Facebook, MessageCircle, MapPin, XIcon } from 'lucide-react';
+import { Instagram, MapPin, XIcon } from 'lucide-react';
+import { FacebookIcon, WhatsAppIcon } from './AllSvg';
 
 const Navbar = () => {
   const [showLocationModal, setShowLocationModal] = useState(false);
@@ -23,12 +24,12 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md py-4 px-6 md:px-12 lg:px-24">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-white font-bold text-xl cursor-default" onClick={() => window.scrollTo(0, 0)}>FOOTWEAR</h1>
+            <h1 className="text-white font-bold text-xl cursor-default" onClick={() => window.scrollTo(0, 0)}>JSM FOOTWEAR</h1>
           </div>
 
           <div className="flex items-center gap-4">
             <a
-              href="https://instagram.com"
+              href={`https://instagram.com/${import.meta.env.VITE_INSTAGRAM_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
@@ -43,7 +44,7 @@ const Navbar = () => {
               className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
               aria-label="Facebook"
             >
-              <Facebook size={16} />
+              <FacebookIcon size={16} />
             </a>
             <a
               href="https://wa.me/919033835654"
@@ -52,7 +53,7 @@ const Navbar = () => {
               className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
               aria-label="WhatsApp"
             >
-              <MessageCircle size={16} />
+              <WhatsAppIcon size={16} />
             </a>
             <button
               onClick={() => setShowLocationModal(true)}
@@ -65,7 +66,7 @@ const Navbar = () => {
         </div>
 
       </nav>
-      {/* Location Modal - Full Screen */}
+
       {showLocationModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div ref={locationModalRef} className="bg-white text-black rounded-2xl max-w-2xl w-full p-6 md:p-8 relative animate-fade-in overflow-auto max-h-[90vh]">
@@ -114,7 +115,7 @@ const Navbar = () => {
                   className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-neutral-800 transition-colors"
                 >
                   <MapPin size={16} />
-                  Get Direction 1
+                  Get Direction
                 </a>
               </div>
 

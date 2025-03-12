@@ -54,7 +54,7 @@ const CollectionPreview = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Latest Collections Preview</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto">
-            A glimpse of our upcoming luxury footwear collections, crafted with precision and designed for distinction.
+            A glimpse of our premium footwear collections, crafted with precision and designed for distinction.
           </p>
         </div>
 

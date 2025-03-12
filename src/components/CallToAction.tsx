@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Instagram, Facebook, MessageCircle, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { CopyIcon, FacebookIcon, WhatsAppIcon } from './AllSvg';
 
 const CallToAction = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -47,7 +48,7 @@ const CallToAction = () => {
   };
 
   const handleShare = (platform: string) => {
-    const shareText = "Join our exclusive pre-launch community for luxury footwear!";
+    const shareText = "Join our exclusive pre-launch community for premium footwear!";
     const shareUrl = window.location.href;
 
     let url = '';
@@ -90,22 +91,22 @@ const CallToAction = () => {
                 onClick={() => handleShare('facebook')}
                 className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
               >
-                <Facebook size={20} />
+                <FacebookIcon size={20} />
                 Share
               </button>
               <button
                 onClick={() => handleShare('whatsapp')}
                 className="flex items-center gap-2 bg-green-500 hover:bg-green-600 px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
               >
-                <MessageCircle size={20} />
+                <WhatsAppIcon size={20} />
                 WhatsApp
               </button>
               <button
                 onClick={() => handleShare('instagram')}
-                className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
+                className="flex items-center gap-2 bg-white/10 text-white hover:bg-neutral-900 px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
               >
-                <Instagram size={20} />
-                Post
+                <CopyIcon />
+                Copy Link
               </button>
             </div>
 

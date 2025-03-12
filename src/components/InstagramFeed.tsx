@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Instagram, Heart, MessageCircle, Share2, XIcon } from 'lucide-react';
+import { Instagram, Heart, Share2, XIcon, MessageCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { CopyIcon, FacebookIcon, TwitterIcon, WhatsAppIcon } from './AllSvg';
@@ -10,8 +10,8 @@ interface InstagramPost {
   permalink: string;
   caption: string;
   timestamp: string;
-  likes: number;
-  comments: number;
+  like_count: number;
+  comments_count: number;
 }
 
 const InstagramFeed = () => {
@@ -51,8 +51,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample1',
           caption: 'Sneak peek at our upcoming collection. #LuxuryFootwear',
           timestamp: '2025-01-15T12:30:00Z',
-          likes: 1243,
-          comments: 89
+          like_count: 1243,
+          comments_count: 89
         },
         {
           id: '2',
@@ -60,8 +60,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample2',
           caption: 'Craftsmanship in every stitch. #ArtisanShoes',
           timestamp: '2025-02-14T10:15:00Z',
-          likes: 2156,
-          comments: 134
+          like_count: 2156,
+          comments_count: 134
         },
         {
           id: '3',
@@ -69,8 +69,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample3',
           caption: 'Elegance meets comfort. #PremiumDesign',
           timestamp: '2025-02-13T15:45:00Z',
-          likes: 1876,
-          comments: 102
+          like_count: 1876,
+          comments_count: 102
         },
         {
           id: '4',
@@ -78,8 +78,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample4',
           caption: 'Urban style redefined. #StreetLuxury',
           timestamp: '2024-01-12T09:20:00Z',
-          likes: 3421,
-          comments: 215
+          like_count: 3421,
+          comments_count: 215
         },
         {
           id: '5',
@@ -87,8 +87,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample5',
           caption: 'Performance meets style. #AthleticLuxury',
           timestamp: '2025-01-11T14:10:00Z',
-          likes: 2987,
-          comments: 178
+          like_count: 2987,
+          comments_count: 178
         },
         {
           id: '6',
@@ -96,8 +96,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample6',
           caption: 'Icons never go out of style. #ClassicDesign',
           timestamp: '2025-02-10T11:30:00Z',
-          likes: 4532,
-          comments: 267
+          like_count: 4532,
+          comments_count: 267
         },
         {
           id: '7',
@@ -105,8 +105,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample7',
           caption: 'Every detail matters. #PrecisionCrafted',
           timestamp: '2025-02-09T16:45:00Z',
-          likes: 2134,
-          comments: 145
+          like_count: 2134,
+          comments_count: 145
         },
         {
           id: '8',
@@ -114,8 +114,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample8',
           caption: 'Limited edition, unlimited style. #ExclusiveRelease',
           timestamp: '2025-02-08T13:20:00Z',
-          likes: 3765,
-          comments: 198
+          like_count: 3765,
+          comments_count: 198
         },
         {
           id: '9',
@@ -123,8 +123,8 @@ const InstagramFeed = () => {
           permalink: 'https://instagram.com/p/sample9',
           caption: 'Step into the future. #InnovativeDesign',
           timestamp: '2025-03-11T17:49:00Z',
-          likes: 2876,
-          comments: 156
+          like_count: 2876,
+          comments_count: 156
         }
       ];
 
@@ -208,9 +208,9 @@ const InstagramFeed = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between mb-16">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Follow Our Journey</h2>
-            <p className="text-neutral-600 max-w-2xl">
-              Join our community of fashion enthusiasts and stay updated with our latest releases and behind-the-scenes content.
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Collection</h2>
+            <p className="text-neutral-600 max-w-3xl">
+              From versatile sneakers to timeless formal shoes, our collection offers a style for every occasion. Whether you're looking for casual ease or sports-ready performance, you’ll find footwear that combines both durability and flair. Shop now and make your next step your best one yet!
             </p>
           </div>
           <div className="flex items-center gap-4 mt-6 md:mt-0">
@@ -256,11 +256,11 @@ const InstagramFeed = () => {
                   <div className="flex items-center gap-4">
                     <button className="flex items-center gap-1 text-white" aria-label="Like post">
                       <Heart size={18} />
-                      <span>{post.likes}</span>
+                      <span>{post.like_count}</span>
                     </button>
                     <button className="flex items-center gap-1 text-white" aria-label="Comment on post">
                       <MessageCircle size={18} />
-                      <span>{post.comments}</span>
+                      <span>{post.comments_count}</span>
                     </button>
                   </div>
                   <button
