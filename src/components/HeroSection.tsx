@@ -20,12 +20,6 @@ const HeroSection = () => {
   const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPhoneNumber(value);
-
-    if (value && !validatePhoneNumber(value)) {
-      setPhoneNumberError('Please enter a valid 10 digits phone number');
-    } else {
-      setPhoneNumberError('');
-    }
   };
 
   const handleWhatsAppSubmit = (e: React.FormEvent) => {
