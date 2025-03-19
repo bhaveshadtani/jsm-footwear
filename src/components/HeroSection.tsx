@@ -1,55 +1,57 @@
-import { ArrowRight, XIcon } from 'lucide-react';
+import { ArrowRight, Loader2, XIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const HeroSection = () => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
-  const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [emailError, setEmailError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
 
   const showPreviewModalRef = useRef<HTMLDivElement>(null);
   const showNotificationModalRef = useRef<HTMLDivElement>(null);
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const validatePhoneNumber = (number: any) => {
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(number);
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setEmail(value);
+    setPhoneNumber(value);
 
-    if (value && !validateEmail(value)) {
-      setEmailError('Please enter a valid email address');
+    if (value && !validatePhoneNumber(value)) {
+      setPhoneNumberError('Please enter a valid 10 digits phone number');
     } else {
-      setEmailError('');
+      setPhoneNumberError('');
     }
   };
 
-  const handleNotificationSubmit = (e: React.FormEvent) => {
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email address');
+    if (!validatePhoneNumber(phoneNumber)) {
+      setPhoneNumberError('Please enter a valid 10 digits phone number');
       return;
     }
 
     setIsSubmitting(true);
+    setPhoneNumberError('');
 
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setEmail('');
+      setPhoneNumber('');
 
-      // Close modal after success message is shown
+      // Redirect to the WhatsApp group
       setTimeout(() => {
         setShowNotificationModal(false);
         setIsSubmitted(false);
-      }, 3000);
-    }, 1500);
+        setPhoneNumberError('');
+        window.open(`https://chat.whatsapp.com/${import.meta.env.VITE_WHATSAPP_GROUP_LINK}`, '_blank');
+      }, 2000);
+    }, 300);
   };
 
   useEffect(() => {
@@ -126,7 +128,7 @@ const HeroSection = () => {
               onClick={() => {
                 setShowNotificationModal(false);
                 setIsSubmitted(false);
-                setEmailError('');
+                setPhoneNumberError('');
               }}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close notification modal"
@@ -134,37 +136,37 @@ const HeroSection = () => {
               <XIcon />
             </button>
 
-            <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
+            <h3 className="text-2xl font-bold mb-4">Join Our WhatsApp Group</h3>
 
             {isSubmitted ? (
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
                 <p className="text-green-800 font-medium">
-                  Thank you! You'll be the first to know when we launch.
+                  Thank you! You will be redirected to join our WhatsApp group shortly.
                 </p>
               </div>
             ) : (
               <>
                 <p className="text-neutral-600 mb-6">
-                  Be the first to know when our collection launches. We'll send you exclusive early access.
+                  Join our WhatsApp group to stay updated with the latest news and offers.
                 </p>
 
-                <form onSubmit={handleNotificationSubmit} className="space-y-4">
+                <form onSubmit={handleWhatsAppSubmit} className="space-y-4">
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1">
-                      Email Address
+                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-neutral-700 mb-1">
+                      WhatsApp Number
                     </label>
                     <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={handleEmailChange}
-                      placeholder="your@email.com"
+                      type="tel"
+                      id="phoneNumber"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChange}
+                      placeholder="XXXXXXXXXX"
                       required
-                      className={`w-full px-4 py-3 border ${emailError ? 'border-red-500' : 'border-neutral-300'
+                      className={`w-full px-4 py-3 border ${phoneNumberError ? 'border-red-500' : 'border-neutral-300'
                         } rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500`}
                     />
-                    {emailError && (
-                      <p className="mt-1 text-sm text-red-600">{emailError}</p>
+                    {phoneNumberError && (
+                      <p className="mt-1 text-sm text-red-600">{phoneNumberError}</p>
                     )}
                   </div>
 
@@ -176,43 +178,23 @@ const HeroSection = () => {
                       className="mt-1"
                     />
                     <label htmlFor="consent" className="ml-2 text-sm text-neutral-600">
-                      I agree to receive email notifications about product launches and exclusive offers.
+                      I agree to receive WhatsApp notifications about group updates and exclusive offers.
                     </label>
                   </div>
 
                   <button
                     type="submit"
-                    disabled={isSubmitting || !!emailError}
-                    className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!emailError ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'
-                      }`}
+                    disabled={isSubmitting || !!phoneNumberError}
+                    className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!phoneNumberError ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'}`}
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
+                        <Loader2 className="animate-spin h-5 w-5 text-white" />
                         Processing...
                       </span>
                     ) : (
                       <>
-                        Notify Me
+                        Join Group
                         <ArrowRight size={18} />
                       </>
                     )}

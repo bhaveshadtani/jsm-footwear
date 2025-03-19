@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { CopyIcon, FacebookIcon, WhatsAppIcon } from './AllSvg';
 
 const CallToAction = () => {
@@ -7,10 +7,12 @@ const CallToAction = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [phoneError, setPhoneError] = useState('');
+  const cachedData = localStorage.getItem("instagram_posts");
+  const followersCount = cachedData ? JSON.parse(cachedData)?.followersCount?.toLocaleString('en-IN') : 0;
 
-  const validatePhoneNumber = (phone: string) => {
-    const phoneRegex = /^[0-9]{10}$/;
-    return phoneRegex.test(phone);
+  const validatePhoneNumber = (number: any) => {
+    const phoneRegex = /^[6-9]\d{9}$/;
+    return phoneRegex.test(number);
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,18 +35,20 @@ const CallToAction = () => {
     }
 
     setIsSubmitting(true);
+    setPhoneError('');
 
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
       setPhoneNumber('');
 
-      // Reset after showing success message
+      // Redirect to the WhatsApp group
       setTimeout(() => {
         setIsSubmitted(false);
-      }, 5000);
-    }, 1500);
+        setPhoneError('');
+        window.open(`https://chat.whatsapp.com/${import.meta.env.VITE_WHATSAPP_GROUP_LINK}`, '_blank');
+      }, 2000);
+    }, 300);
   };
 
   const handleShare = (platform: string) => {
@@ -111,7 +115,7 @@ const CallToAction = () => {
             </div>
 
             <div className="flex items-center gap-2 text-neutral-400">
-              <span className="text-2xl font-bold text-white">15.3K</span>{' '}
+              <span className="text-2xl font-bold text-white">{followersCount}</span>{' '}
               people already joined
             </div>
           </div>
@@ -128,7 +132,7 @@ const CallToAction = () => {
             {isSubmitted ? (
               <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 text-center">
                 <p className="text-green-400 font-medium">
-                  Thank you! You've been added to our VIP group.
+                  Thank you! You will be redirected to join our WhatsApp group shortly.
                 </p>
               </div>
             ) : (
@@ -182,26 +186,7 @@ const CallToAction = () => {
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
-                      <svg
-                        className="animate-spin h-5 w-5 text-black"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
+                      <Loader2 className="animate-spin h-5 w-5 text-black" />
                       Processing...
                     </span>
                   ) : (
