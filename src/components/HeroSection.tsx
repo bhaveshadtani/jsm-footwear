@@ -6,43 +6,22 @@ const HeroSection = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [phoneNumberError, setPhoneNumberError] = useState('');
 
   const showPreviewModalRef = useRef<HTMLDivElement>(null);
   const showNotificationModalRef = useRef<HTMLDivElement>(null);
 
-  const validatePhoneNumber = (number: any) => {
-    const phoneRegex = /^[6-9]\d{9}$/;
-    return phoneRegex.test(number);
-  };
-
-  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPhoneNumber(value);
-  };
-
-  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validatePhoneNumber(phoneNumber)) {
-      setPhoneNumberError('Please enter a valid 10 digits phone number');
-      return;
-    }
-
     setIsSubmitting(true);
-    setPhoneNumberError('');
 
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setPhoneNumber('');
 
       // Redirect to the WhatsApp group
       setTimeout(() => {
         setShowNotificationModal(false);
         setIsSubmitted(false);
-        setPhoneNumberError('');
         window.open(`https://chat.whatsapp.com/${import.meta.env.VITE_WHATSAPP_GROUP_LINK}`, '_blank');
       }, 2000);
     }, 300);
@@ -122,7 +101,6 @@ const HeroSection = () => {
               onClick={() => {
                 setShowNotificationModal(false);
                 setIsSubmitted(false);
-                setPhoneNumberError('');
               }}
               className="absolute top-4 right-4 text-neutral-500 hover:text-black"
               aria-label="Close notification modal"
@@ -130,7 +108,7 @@ const HeroSection = () => {
               <XIcon />
             </button>
 
-            <h3 className="text-2xl font-bold mb-4">Join Our WhatsApp Group</h3>
+            <h3 className="text-2xl font-bold mb-4">Join Our VIP WhatsApp Group</h3>
 
             {isSubmitted ? (
               <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
@@ -141,59 +119,28 @@ const HeroSection = () => {
             ) : (
               <>
                 <p className="text-neutral-600 mb-6">
-                  Join our WhatsApp group to stay updated with the latest news and offers.
+                  Get exclusive updates, early access to drops, and special offers
+                  directly to your phone. No spam, just the good stuff.
                 </p>
 
-                <form onSubmit={handleWhatsAppSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-neutral-700 mb-1">
-                      WhatsApp Number
-                    </label>
-                    <input
-                      type="tel"
-                      id="phoneNumber"
-                      value={phoneNumber}
-                      onChange={handlePhoneNumberChange}
-                      placeholder="XXXXXXXXXX"
-                      required
-                      className={`w-full px-4 py-3 border ${phoneNumberError ? 'border-red-500' : 'border-neutral-300'
-                        } rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500`}
-                    />
-                    {phoneNumberError && (
-                      <p className="mt-1 text-sm text-red-600">{phoneNumberError}</p>
-                    )}
-                  </div>
-
-                  <div className="flex items-start">
-                    <input
-                      type="checkbox"
-                      id="consent"
-                      required
-                      className="mt-1"
-                    />
-                    <label htmlFor="consent" className="ml-2 text-sm text-neutral-600">
-                      I agree to receive WhatsApp notifications about group updates and exclusive offers.
-                    </label>
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={isSubmitting || !!phoneNumberError}
-                    className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!phoneNumberError ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'}`}
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 className="animate-spin h-5 w-5 text-white" />
-                        Processing...
-                      </span>
-                    ) : (
-                      <>
-                        Join Group
-                        <ArrowRight size={18} />
-                      </>
-                    )}
-                  </button>
-                </form>
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className={`w-full bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-800'}`}
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="animate-spin h-5 w-5 text-white" />
+                      Processing...
+                    </span>
+                  ) : (
+                    <>
+                      Join VIP Group
+                      <ArrowRight size={18} />
+                    </>
+                  )}
+                </button>
               </>
             )}
           </div>

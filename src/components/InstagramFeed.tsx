@@ -28,12 +28,12 @@ const InstagramFeed = () => {
   const [shareCaption, setShareCaption] = useState('');
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const USERNAME = import.meta.env.VITE_INSTAGRAM_USERNAME;
-  const API_URL = `${import.meta.env.VITE_INSTAGRAM_API_URL}/${import.meta.env.VITE_INSTAGRAM_BUSINESS_ACCOUNT_ID}?fields=username,profile_picture_url,followers_count,media.limit(9){id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count}&access_token=${import.meta.env.VITE_INSTAGRAM_ACCESS_TOKEN}`;
+  // const API_URL = `${import.meta.env.VITE_INSTAGRAM_API_URL}/${import.meta.env.VITE_INSTAGRAM_BUSINESS_ACCOUNT_ID}?fields=username,profile_picture_url,followers_count,media.limit(9){id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,like_count,comments_count}&access_token=${import.meta.env.VITE_INSTAGRAM_ACCESS_TOKEN}`;
 
   const data: any = {
     "username": "jsm_footwear2",
     "profile_picture_url": "https://scontent.famd12-1.fna.fbcdn.net/v/t51.2885-15/418023564_316568048045182_6581469065265417659_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=7d201b&_nc_ohc=GLxmbMxXxj0Q7kNvgFWY6NR&_nc_oc=Adh7CGR1p5KGPCSfBfCgwWiH4jI_3dyMKiLFuPRWqeZxDb4NFYZbJylgTq5GcFLlux4&_nc_zt=23&_nc_ht=scontent.famd12-1.fna&edm=AL-3X8kEAAAA&oh=00_AYFOzmYTwJFGsItXtxdn3P8QCoxk5p1K8841g51wOwtRkQ&oe=67DF5346",
-    "followers_count": 13,
+    "followers_count": 1000,
     "media": {
       "data": [
         {
@@ -138,37 +138,37 @@ const InstagramFeed = () => {
   }
 
   // Fetch Instagram posts
-  useEffect(() => {
-    const formattedData: any = {
-      username: data.username,
-      profilePicture: data.profile_picture_url,
-      followersCount: data.followers_count,
-      posts: data.media.data.map((post: any) => ({
-        id: post.id,
-        thumbnail_url: post.thumbnail_url,
-        media_url: post.media_url,
-        media_type: post.media_type,
-        permalink: post.permalink,
-        caption: post.caption || "",
-        timestamp: post.timestamp,
-        like_count: post.like_count || 0,
-        comments_count: post.comments_count || 0,
-      })),
-    };
-    setInstagramPosts(formattedData);
-  }, []);
-
   // useEffect(() => {
-  //   fetchInstagramPosts()
-  //     .then((fetchedData: any) => {
-  //       if (fetchedData) {
-  //         setInstagramPosts(fetchedData);
-  //       } else {
-  //         setIsInstagramPostError(true);
-  //       }
-  //     })
-  //     .catch(() => setIsInstagramPostError(true));
+  //   const formattedData: any = {
+  //     username: data.username,
+  //     profilePicture: data.profile_picture_url,
+  //     followersCount: data.followers_count,
+  //     posts: data.media.data.map((post: any) => ({
+  //       id: post.id,
+  //       thumbnail_url: post.thumbnail_url,
+  //       media_url: post.media_url,
+  //       media_type: post.media_type,
+  //       permalink: post.permalink,
+  //       caption: post.caption || "",
+  //       timestamp: post.timestamp,
+  //       like_count: post.like_count || 0,
+  //       comments_count: post.comments_count || 0,
+  //     })),
+  //   };
+  //   setInstagramPosts(formattedData);
   // }, []);
+
+  useEffect(() => {
+    fetchInstagramPosts()
+      .then((fetchedData: any) => {
+        if (fetchedData) {
+          setInstagramPosts(fetchedData);
+        } else {
+          setIsInstagramPostError(true);
+        }
+      })
+      .catch(() => setIsInstagramPostError(true));
+  }, []);
 
   const fetchInstagramPosts = async () => {
     try {
@@ -181,10 +181,10 @@ const InstagramFeed = () => {
         }
       }
 
-      const response = await fetch(API_URL);
-      const data = await response.json();
+      // const response = await fetch(API_URL);
+      // const data = await response.json();
 
-      if (!response.ok) throw new Error(data.error.message);
+      // if (!response.ok) throw new Error(data.error.message);
       const formattedData = {
         username: data.username,
         profilePicture: data.profile_picture_url,

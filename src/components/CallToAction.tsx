@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { CopyIcon, FacebookIcon, WhatsAppIcon } from './AllSvg';
 
 const CallToAction = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [phoneError, setPhoneError] = useState('');
-  const cachedData = localStorage.getItem("instagram_posts");
-  const followersCount = cachedData ? JSON.parse(cachedData)?.followersCount?.toLocaleString('en-IN') : 0;
+  const [followersCount, setFollowersCount] = useState(0);
 
-  const validatePhoneNumber = (number: any) => {
-    const phoneRegex = /^[6-9]\d{9}$/;
-    return phoneRegex.test(number);
+  // Function to format the number in 'K', 'M', etc.
+  const formatNumber = (num: number) => {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B'; // For billions
+    } else if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M'; // For millions
+    } else if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K'; // For thousands
+    }
+    return num.toString(); // For numbers less than 1000
   };
 
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setPhoneNumber(value);
-  };
+  useEffect(() => {
+    const cachedData = localStorage.getItem("instagram_posts");
+    if (cachedData) {
+      const formattedCount = cachedData ? JSON.parse(cachedData).followersCount : 0;
+      setFollowersCount(formattedCount);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!validatePhoneNumber(phoneNumber)) {
-      setPhoneError('Please enter a valid 10 digits phone number');
-      return;
-    }
-
     setIsSubmitting(true);
-    setPhoneError('');
 
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setPhoneNumber('');
 
       // Redirect to the WhatsApp group
       setTimeout(() => {
         setIsSubmitted(false);
-        setPhoneError('');
         window.open(`https://chat.whatsapp.com/${import.meta.env.VITE_WHATSAPP_GROUP_LINK}`, '_blank');
       }, 2000);
     }, 300);
@@ -108,10 +106,12 @@ const CallToAction = () => {
               </button>
             </div>
 
-            <div className="flex items-center gap-2 text-neutral-400">
-              <span className="text-2xl font-bold text-white">{followersCount}</span>{' '}
-              people already joined
-            </div>
+            {followersCount > 0 &&
+              <div className="flex items-center gap-2 text-neutral-400">
+                <span className="text-2xl font-bold text-white">{formatNumber(followersCount)}</span>{' '}
+                people already joined
+              </div>
+            }
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm p-8 md:p-10 rounded-2xl">
@@ -130,67 +130,24 @@ const CallToAction = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-medium text-neutral-300 mb-1"
-                  >
-                    WhatsApp Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    value={phoneNumber}
-                    onChange={handlePhoneChange}
-                    // maxLength={10}
-                    placeholder="XXXXXXXXXX"
-                    required
-                    className={`w-full px-4 py-3 bg-white/5 border ${phoneError ? 'border-red-500' : 'border-white/10'
-                      } rounded-lg focus:outline-none focus:ring-2 focus:ring-white/30 text-white`}
-                  />
-                  {phoneError && (
-                    <p className="mt-1 text-sm text-red-400">{phoneError}</p>
-                  )}
-                </div>
-
-                <div className="flex items-start">
-                  <input
-                    type="checkbox"
-                    id="consent"
-                    required
-                    className="mt-1"
-                  />
-                  <label
-                    htmlFor="consent"
-                    className="ml-2 text-sm text-neutral-400"
-                  >
-                    I agree to receive WhatsApp messages and understand I can
-                    unsubscribe anytime.
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !!phoneError}
-                  className={`w-full bg-white text-black px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting || !!phoneError
-                    ? 'opacity-70 cursor-not-allowed'
-                    : 'hover:bg-neutral-200'
-                    }`}
-                >
-                  {isSubmitting ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 className="animate-spin h-5 w-5 text-black" />
-                      Processing...
-                    </span>
-                  ) : (
-                    <>
-                      Join VIP Group
-                      <ArrowRight size={18} />
-                    </>
-                  )}
-                </button>
-              </form>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className={`w-full bg-white text-black px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-neutral-200'}`}
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="animate-spin h-5 w-5 text-black" />
+                    Processing...
+                  </span>
+                ) : (
+                  <>
+                    Join VIP Group
+                    <ArrowRight size={18} />
+                  </>
+                )}
+              </button>
             )}
           </div>
         </div>
